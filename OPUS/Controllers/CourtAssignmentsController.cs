@@ -27,10 +27,8 @@ namespace OPUS.Controllers
         [Authorize]
         public ActionResult Index(string date)
         {
-            //string lastDate = "";
-            if (Session["courtDates"] == null) GetCourtDates();
-            ViewBag.CourtDates = Session["courtDates"];
             string Group = Session["Group"].ToString();
+            ViewBag.CourtDates = util.GetCourtDates(Group);
 
             if (Session["courtDate"] == null)
             {
@@ -39,15 +37,6 @@ namespace OPUS.Controllers
                     Session["courtDate"] = date;
                 }
             } else date = Session["courtDate"].ToString();
-
-            if (Session["PlayersList"] == null)
-            {
-                string playcode = Session["PlayCode"].ToString();
-                List<PlayerList> vPlayers = util.GetRankedPlayers(Session["Group"].ToString(), playcode);
-                Session["PlayersList"] = vPlayers;
-                Session["PlayersSelectList"] = new SelectList((vPlayers).Select(d => new SelectListItem { Text = d.Name, Value = d.ID.ToString() }), "Value", "Text");
-            }
-
 
             var assignmentData = from a in db.Assignments
                                  where a.Date.Equals(date) && a.Group.Equals(Group)
@@ -67,26 +56,21 @@ namespace OPUS.Controllers
             var checkedValues = form.GetValues("selectChkBx");
             if (checkedValues != null)
             {
-                //List<PlayerList> playersDrop = new List<PlayerList>();
                 List<OPUSPlayerInfoList> players = new List<OPUSPlayerInfoList>();
                 foreach (var id in checkedValues)
                 {
                     int id1 = Convert.ToInt32(id);
                     var player = db1.OpusPlayers.First(u => u.PlayerID == id1);
                     players.Add(new OPUSPlayerInfoList { ID = player.PlayerID, Name = player.NameRank, OverallPercentWon = player.OverallPercentWon, Rank = player.Rank });
-                    //playersDrop.Add(new PlayerList { ID = player.PlayerID, Name = player.NameRank });
                 }
                 List<OPUSPlayerInfoList> vPlayers = players.OrderBy(x => x.Rank).ToList();
-                Session["PlayerWebGridInfo"] = vPlayers;
-
-                //Session["Players"] = new SelectList((vPlayers).Select(d => new SelectListItem { Text = d.Name, Value = d.ID.ToString() }), "Value", "Text");
-
-                Session["ThisWeeksPlayers"] = new SelectList(players.OrderBy(x => x.Rank), "ID", "Name");
+                TempData["PlayerWebGridInfo"] = vPlayers;
+                TempData["ThisWeeksPlayers"] = new SelectList(players.OrderBy(x => x.Rank), "ID", "Name");
             }
             return RedirectToAction("index");
         }
 
-        private void GetCourtDates()
+        private List<SelectListItem> GetCourtDates()
         {
             // Get unique dates OPUS Played
             List<SelectListItem> items = new List<SelectListItem>();
@@ -99,7 +83,7 @@ namespace OPUS.Controllers
                 items.Add(new SelectListItem { Text = item, Value = item });
                 //lastDate = item;
             }
-            Session["courtDates"] = items;
+            return items;
         }
 
         private void PreviousCourtAssignments(string date)
@@ -245,34 +229,31 @@ namespace OPUS.Controllers
             ca.defaultDate = Session["courtDate"].ToString();
             string playcode = Session["PlayCode"].ToString();
 
-            if (Session["courtDates"] == null) GetCourtDates();
+            if (playcode == "O")
+                ViewBag.WebGridTitle = "OPUS Players";
+            else
+                ViewBag.WebGridTitle = "Scramble Players";
 
             //Setup data for the name dropdowns
-            if (ViewBag.Players == null)
+            if (TempData["ThisWeeksPlayers"] != null)
             {
-                if(Session["ThisWeeksPlayers"] != null)
-                {
-                    ViewBag.Players = Session["ThisWeeksPlayers"];
-                }
-                else
-                    ViewBag.Players = Session["PlayersSelectList"];
-            }
-
-            //Setup data for the OPUS Player grid
-            if (Session["PlayerWebGridInfo"] == null)
-            {
-                //GetOPUSPlayer();
-                // ViewBag.ThisWeekPlayers = ViewBag.OPUSPlayers;
-                ViewBag.PlayerWebGridInfo = util.GetOpusPlayerInfo(Session["Group"].ToString(), playcode);
-                Session["PlayerWebGridInfo"] = ViewBag.PlayerWebGridInfo;
+                ViewBag.Players = TempData["ThisWeeksPlayers"];
+                TempData["ThisWeeksPlayers"] = ViewBag.Players;
+                ViewBag.PlayerWebGridInfo = TempData["PlayerWebGridInfo"];
+                TempData["PlayerWebGridInfo"] = ViewBag.PlayerWebGridInfo;
             }
             else
-                ViewBag.PlayerWebGridInfo = Session["PlayerWebGridInfo"];
+            {
+                ViewBag.Players = util.GetPlayersSelectList(Session["Group"].ToString(), playcode);
+                TempData["PlayersSelectList"] = ViewBag.Players;
+                ViewBag.PlayerWebGridInfo = util.GetOpusPlayerInfo(Session["Group"].ToString(), playcode);
+                TempData["PlayerWebGridInfo"] = ViewBag.PlayerWebGridInfo;
+            }
             ca.Court = null;
 
             //Get Previous Court Assignments
             //Check if date is not new date and get appropriate previous courts
-            List<SelectListItem> dates = Session["CourtDates"] as List<SelectListItem>;
+            List<SelectListItem> dates = util.GetCourtDates(Session["Group"].ToString()) as List<SelectListItem>;
 
             string pcd = "";
             if(Session["previousCourtDate"] != null) pcd = Session["previousCourtDate"].ToString();
@@ -305,7 +286,7 @@ namespace OPUS.Controllers
         [Authorize(Roles = "Admin,Ladies Monitor,Mens Monitor")]
         public ActionResult Create([Bind(Include = "ID,Date,Court,Player1ID,Player2ID,Player3ID,Player4ID")] CourtAssignment courtAssignment)
         {
-            List<PlayerList> players = (List<PlayerList>)Session["PlayersList"];
+            List<PlayerList> players = util.GetPlayers(Session["Group"].ToString(), Session["PlayCode"].ToString());
             courtAssignment.Player1 = players.Where(x => x.ID == courtAssignment.Player1ID).First().Name;
             courtAssignment.Player2 = players.Where(x => x.ID == courtAssignment.Player2ID).First().Name;
             courtAssignment.Player3 = players.Where(x => x.ID == courtAssignment.Player3ID).First().Name;
@@ -320,16 +301,6 @@ namespace OPUS.Controllers
                 db.SaveChanges();
                 Session["courtDate"] = courtAssignment.Date;
 
-                //Check if date already in courtdates and if not add it
-                List<SelectListItem> n = (List<SelectListItem>)Session["courtDates"];
-                string last = n.Last().Text;
-                if(last != courtAssignment.Date)
-                {
-                    //null playedDates and courtDates so they will regenerate with the new date included.
-                    Session["playedDates"] = null;
-                    Session["courtDates"] = null;
-                }
-
                 //Check if Scoring has been started for this date and if so add the new players
                 if(db2.Scores.Where(u => u.Date == courtAssignment.Date).Any())
                 {
@@ -339,22 +310,22 @@ namespace OPUS.Controllers
                 db1.SaveChanges();
 
                 //Remove players from Players and ThisWeekPlayers
-                if(Session["PlayerWebGridInfo"] != null)
+                if(TempData["PlayerWebGridInfo"] != null)
                 {
-                    List<OPUSPlayerInfoList> pt = (List < OPUSPlayerInfoList >) Session["PlayerWebGridInfo"];
+                    List<OPUSPlayerInfoList> pt = (List < OPUSPlayerInfoList >)TempData["PlayerWebGridInfo"];
                     pt.Remove(pt.Where(c => c.Name == courtAssignment.Player1).Single());
                     pt.Remove(pt.Where(c => c.Name == courtAssignment.Player2).Single());
                     pt.Remove(pt.Where(c => c.Name == courtAssignment.Player3).Single());
                     pt.Remove(pt.Where(c => c.Name == courtAssignment.Player4).Single());
                     if (pt.Count > 0)
                     {
-                        Session["PlayerWebGridInfo"] = pt; //Grid
-                        Session["ThisWeeksPlayers"] = new SelectList(pt.OrderBy(x => x.Rank), "ID", "NameRank"); //Dropdown List
+                        TempData["PlayerWebGridInfo"] = pt; //Grid
+                        TempData["ThisWeeksPlayers"] = new SelectList(pt.OrderBy(x => x.Rank), "ID", "NameRank"); //Dropdown List
                     }
                     else
                     {
-                        Session["PlayerWebGridInfo"] = null; //Grid
-                        Session["ThisWeeksPlayers"] = null; //DropdownList
+                        TempData["PlayerWebGridInfo"] = null; //Grid
+                        TempData["ThisWeeksPlayers"] = null; //DropdownList
                     }
                 }
 
@@ -373,7 +344,8 @@ namespace OPUS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CourtAssignment courtAssignment = db.Assignments.Find(id);
-            if (ViewBag.Players == null) ViewBag.Players = Session["PlayersSelectList"];
+            ViewBag.Players = util.GetPlayersSelectList(Session["Group"].ToString(), Session["PlayCode"].ToString());
+            TempData["PlayersList"] = ViewBag.Players;
             return View(courtAssignment);
         }
 
@@ -385,7 +357,7 @@ namespace OPUS.Controllers
         [Authorize(Roles = "Admin,Ladies Monitor,Mens Monitor")]
         public ActionResult Edit([Bind(Include = "ID,Group,PlayCode,Date,Court,Player1ID,Player2ID,Player3ID,Player4ID")] CourtAssignment courtAssignment)
         {
-            List<PlayerList> players = (List<PlayerList>)Session["PlayersList"];
+            List<PlayerList> players = util.GetPlayers(Session["Group"].ToString(), Session["PlayCode"].ToString());
             courtAssignment.Player1 = players.Where(x => x.ID == courtAssignment.Player1ID).First().Name;
             courtAssignment.Player2 = players.Where(x => x.ID == courtAssignment.Player2ID).First().Name;
             courtAssignment.Player3 = players.Where(x => x.ID == courtAssignment.Player3ID).First().Name;
@@ -394,8 +366,11 @@ namespace OPUS.Controllers
             if (ModelState.IsValid)
             {
                 //Check if Scoring has been started for this date and if so update players
-                string[] toBeDeleted = new string[4];
-                string[] toBeAdded = new string[4];
+                int[] toBeDeletedID = new int[4] { 0, 0, 0, 0 };
+                string[] toBeAddedFirst = new string[4];
+                string[] toBeAddedLast = new string[4];
+                int[] toBeAddedID = new int[4] { 0, 0, 0, 0 };
+                string[] toBeAddedName = new string[4];
                 string[] currentNames = new string[4];
                 if (db2.Scores.Where(u => u.Date == courtAssignment.Date).Any())
                 {
@@ -408,50 +383,73 @@ namespace OPUS.Controllers
                         //Check for deletions
                         if(ShouldDelete(item.Player1, courtAssignment))
                         {
-                            toBeDeleted[iDelete++] = item.Player1;
+                            toBeDeletedID[iDelete++] = item.Player1ID;
                         }
                         currentNames[0] = item.Player1;
                         if (ShouldDelete(item.Player2, courtAssignment))
                         {
-                            toBeDeleted[iDelete++] = item.Player2;
+                            toBeDeletedID[iDelete++] = item.Player2ID;
                         }
                         currentNames[1] = item.Player2;
                         if (ShouldDelete(item.Player3, courtAssignment))
                         {
-                            toBeDeleted[iDelete++] = item.Player3;
+                            toBeDeletedID[iDelete++] = item.Player3ID;
                         }
                         currentNames[2] = item.Player3;
                         if (ShouldDelete(item.Player4, courtAssignment))
                         {
-                            toBeDeleted[iDelete++] = item.Player4;
+                            toBeDeletedID[iDelete++] = item.Player4ID;
                         }
                         currentNames[3] = item.Player4;
 
                         //Check for additions
+                        // Will need to get player info first
+                        int id = 0;
+                        OpusPlayer player = null;
                         if (ShouldAdd(currentNames, courtAssignment.Player1))
                         {
-                            toBeAdded[iAdd++] = courtAssignment.Player1;
+                            id = Convert.ToInt32(courtAssignment.Player1ID);
+                            player = db1.OpusPlayers.Single(q => q.PlayerID == id);
+                            toBeAddedFirst[iAdd] = player.First;
+                            toBeAddedLast[iAdd] = player.Last;
+                            toBeAddedID[iAdd] = player.PlayerID;
+                            toBeAddedName[iAdd++] = courtAssignment.Player1;
                         }
                         if (ShouldAdd(currentNames, courtAssignment.Player2))
                         {
-                            toBeAdded[iAdd++] = courtAssignment.Player2;
+                            id = Convert.ToInt32(courtAssignment.Player2ID);
+                            player = db1.OpusPlayers.Single(q => q.PlayerID == id);
+                            toBeAddedFirst[iAdd] = player.First;
+                            toBeAddedLast[iAdd] = player.Last;
+                            toBeAddedID[iAdd] = player.PlayerID;
+                            toBeAddedName[iAdd++] = courtAssignment.Player2;
                         }
                         if (ShouldAdd(currentNames, courtAssignment.Player3))
                         {
-                            toBeAdded[iAdd++] = courtAssignment.Player3;
+                            id = Convert.ToInt32(courtAssignment.Player3ID);
+                            player = db1.OpusPlayers.Single(q => q.PlayerID == id);
+                            toBeAddedFirst[iAdd] = player.First;
+                            toBeAddedLast[iAdd] = player.Last;
+                            toBeAddedID[iAdd] = player.PlayerID;
+                            toBeAddedName[iAdd++] = courtAssignment.Player3;
                         }
                         if (ShouldAdd(currentNames, courtAssignment.Player4))
                         {
-                            toBeAdded[iAdd++] = courtAssignment.Player4;
+                            id = Convert.ToInt32(courtAssignment.Player4ID);
+                            player = db1.OpusPlayers.Single(q => q.PlayerID == id);
+                            toBeAddedFirst[iAdd] = player.First;
+                            toBeAddedLast[iAdd] = player.Last;
+                            toBeAddedID[iAdd] = player.PlayerID;
+                            toBeAddedName[iAdd++] = courtAssignment.Player4;
                         }
                     }
                     for(int i = 0; i <= 3; i++)
                     {
                         //Remove Player i
-                        if (toBeDeleted[i] != null)
+                        if (toBeDeletedID[i] != 0)
                         {
-                            var deleteName = toBeDeleted[i];
-                            var player = db2.Scores.First(u => u.Name == deleteName && u.Date == courtAssignment.Date);
+                            var deleteID = toBeDeletedID[i];
+                            var player = db2.Scores.First(u => u.STCPlayerID == deleteID && u.Date == courtAssignment.Date);
                             if (player != null)
                             {
                                 db2.Scores.Remove(player);
@@ -460,13 +458,17 @@ namespace OPUS.Controllers
                         }
 
                         //Add Player
-                        if(toBeAdded[i] != null)
+                        if(toBeAddedID[i] != 0)
                         {
                             //Load a record into Scores table
                             Scoring sRow = new Scoring
                             {
                                 Date = courtAssignment.Date,
-                                Name = toBeAdded[i]
+                                First = toBeAddedFirst[i],
+                                Last = toBeAddedLast[i],
+                                STCPlayerID = toBeAddedID[i],
+                                Group = Session["Group"].ToString(),
+                                Name = toBeAddedName[i]
                             };
                             db2.Scores.Add(sRow);
                             bSaveChanges = true;

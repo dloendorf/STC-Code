@@ -26,6 +26,12 @@ namespace OPUS
             return players;
         }
 
+        public SelectList GetPlayersSelectList(string Group, string playCode)
+        {
+            List<PlayerList> vPlayers = GetRankedPlayers(Group, playCode);
+            return new SelectList((vPlayers).Select(d => new SelectListItem { Text = d.Name, Value = d.ID.ToString() }), "Value", "Text");
+        }
+
         public List<OPUSPlayerInfoList> GetOpusPlayerInfo(string Group, string playCode)
         {
             List<OPUSPlayerInfoList> players = new List<OPUSPlayerInfoList>();
@@ -79,6 +85,20 @@ namespace OPUS
                 result = (from m in dates where m.Group.Equals(Group) & m.PlayCode.Equals(playcode) select m.Date).Distinct().ToList();
             else
                 result = (from m in dates where m.Season == season && m.Group.Equals(Group) & m.PlayCode.Equals(playcode) select m.Date).Distinct().ToList();
+            foreach (var item in result)
+            {
+                items.Add(new SelectListItem { Text = item, Value = item });
+            }
+            return items;
+        }
+
+        public List<SelectListItem> GetCourtDates(string Group)
+        {
+            // Get unique dates OPUS Played
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "New Date", Value = "NewDate" });
+            var dates = db.Assignments;
+            var result = (from m in dates where m.Group.Equals(Group) select m.Date).Distinct().ToList();
             foreach (var item in result)
             {
                 items.Add(new SelectListItem { Text = item, Value = item });
