@@ -37,6 +37,19 @@ textarea {
     border-color: forestgreen;
 }
 
+.input-color {
+    position: relative;
+}
+.input-color input {
+    padding-left: 30px;
+}
+.input-color .color-box {
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    position: absolute;
+}
+
 @media print
 {    
     .no-print, .no-print *
