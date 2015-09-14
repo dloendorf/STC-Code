@@ -14,17 +14,17 @@ namespace OPUS.Controllers
         public ActionResult Index()
         {
             System.Web.HttpContext context = System.Web.HttpContext.Current;
-            Session["Site"] = "OPUS";
-            Session["playCode"] = "O";
-            Session["URL"] = "Not Set";
+            context.Session["Site"] = "OPUS";
+            context.Session["playCode"] = "O";
+            context.Session["URL"] = "Not Set";
             string uri = context.Request.Url.ToString();
-            Session["URL"] = uri;
+            context.Session["URL"] = uri;
             ViewBag.URL = uri;
             if (uri.Contains("stcscramble"))
             {
-                Session["Site"] = "Scramble";
-                Session["playCode"] = "S";
-                Session["Group"] = "";
+                context.Session["Site"] = "Scramble";
+                context.Session["playCode"] = "S";
+                context.Session["Group"] = "";
             }
             //else {
             if (User.Identity.Name != "")
