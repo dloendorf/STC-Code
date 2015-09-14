@@ -13,18 +13,19 @@ namespace OPUS.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            System.Web.HttpContext context = System.Web.HttpContext.Current;
-            context.Session["Site"] = "OPUS";
-            context.Session["playCode"] = "O";
-            context.Session["URL"] = "Not Set";
-            string uri = context.Request.Url.ToString();
-            context.Session["URL"] = uri;
+            var request = ControllerContext.RequestContext.HttpContext.Request;
+            //System.Web.HttpContext context = System.Web.HttpContext.Current;
+            Session["Site"] = "OPUS";
+            Session["playCode"] = "O";
+            Session["URL"] = "Not Set";
+            string uri = request.Url.ToString();
+            Session["URL"] = uri;
             ViewBag.URL = uri;
             if (uri.Contains("stcscramble"))
             {
-                context.Session["Site"] = "Scramble";
-                context.Session["playCode"] = "S";
-                context.Session["Group"] = "";
+                Session["Site"] = "Scramble";
+                Session["playCode"] = "S";
+                Session["Group"] = "";
             }
             //else {
             if (User.Identity.Name != "")

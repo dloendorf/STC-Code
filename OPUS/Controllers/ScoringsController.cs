@@ -24,16 +24,16 @@ namespace OPUS.Controllers
         public ActionResult Index(string date, string sortOrder)
         {
             string sGroup = Session["Group"].ToString();
-            if (Session["playedDates"] == null)
-            {
+            //if (Session["playedDates"] == null)
+            //{
                 // Get unique dates OPUS Played
-                List<SelectListItem> items = new List<SelectListItem>();
-                var dates = db.Assignments;
-                var result = (from m in dates where m.Group.Equals(sGroup) select m.Date).Distinct().ToList();
-                foreach (var item in result) items.Add(new SelectListItem { Text = item, Value = item });
-                Session["playedDates"] = items;
-            }
-            ViewBag.PlayedDates = Session["playedDates"];
+                //List<SelectListItem> items = new List<SelectListItem>();
+                //var dates = db.Assignments;
+                //var result = (from m in dates where m.Group.Equals(sGroup) select m.Date).Distinct().ToList();
+                //foreach (var item in result) items.Add(new SelectListItem { Text = item, Value = item });
+                //Session["playedDates"] = items;
+            //}
+            ViewBag.PlayedDates = util.GetCourtDates(sGroup);
 
             if (Session["playedDate"] == null)
             {
