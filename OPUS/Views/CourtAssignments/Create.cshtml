@@ -101,7 +101,7 @@
                             }
                         </div>
                         <div id ="opusPlayers" class="col-md-12">
-                            <h4>OPUS Players</h4>
+                            <h4>@ViewBag.WebGridTitle</h4>
                             @{
                                 var grid1 = new WebGrid(source: ViewBag.PlayerWebGridInfo, canPage: false, defaultSort:"Rank");
                                 @grid1.GetHtml(htmlAttributes: new { id = "OPUSPlayers" }, columns: grid1.Columns(
