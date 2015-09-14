@@ -1,0 +1,46 @@
+﻿@model OPUS.ViewModels.RemoveSessionViewModel
+@{
+    ViewBag.Title = "Remove Session";
+}
+<br />
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Session, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.Session, Model.Sessions, "--Select One--")
+            </div>
+        </div>
+
+        <br />
+        <div>
+            @{
+                if (Model.Removed)
+                {
+                    <div class="form-group">
+                        @Html.Label(Model.Message, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <a class="btn btn-primary" href="/RemoveSession/Index">OK</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Remove Session" class="btn btn-primary" />
+                            <a class="btn btn-primary" href="/Home/Index">Cancel</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

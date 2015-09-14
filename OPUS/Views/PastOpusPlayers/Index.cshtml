@@ -1,0 +1,98 @@
+﻿@model IEnumerable<OPUS.Models.PastOpusPlayer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Past Seasons Players</h2>
+
+@using (Html.BeginForm("SelectSeason", "PastOpusPlayers", FormMethod.Post, new { id = "TheForm" }))
+{
+    <table>
+        <tr><td height="30"></td></tr>
+        <tr>
+            <td width="100px">Select Session</td>
+            <td>
+                @Html.DropDownList("Season", (IEnumerable<SelectListItem>)ViewBag.Seasons, "--Select One--", new { onchange = "document.getElementById('TheForm').submit();" })
+            </td>
+        </tr>
+        <tr><td height="30"></td></tr>
+    </table>
+}
+
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.First)*@
+                @*@Html.ActionLink("First", "Index", new { sortOrder = ViewBag.FirstSortParm})*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.FirstSortParm })"><div>First</div><div>Name</div> </a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Last)*@
+                @*@Html.ActionLink("Last", "Index", new { sortOrder = ViewBag.LastSortParm})*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.LastSortParm })"><div>Last</div><div>Name</div> </a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.STCRank)*@
+                @*@Html.ActionLink("STC Rank", "Index", new { sortOrder = ViewBag.STCSortParm})*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.STCSortParm })"><div>STC</div><div>Rank</div> </a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.WeeksPlayed)*@
+                @*@Html.ActionLink("Weeks Played", "Index", new { sortOrder = ViewBag.WeeksPlayedSortParm })*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.WeeksPlayedSortParm })"><div>Weeks</div><div>Played</div> </a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.OverallPercentWon)*@
+                @*@Html.ActionLink("% Won Overall", "Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })"><div>% Won</div><div>Overall</div> </a>
+            </th>
+            @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+            {
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Factor)*@
+                    @*@Html.ActionLink("Factor", "Index", new { sortOrder = ViewBag.FactorSortParm })*@
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.FactorSortParm })"><div>OPUS</div><div>Factor</div> </a>
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Rank)*@
+                    @*@Html.ActionLink("Weekly OPUS Rank", "Index", new { sortOrder = ViewBag.RankSortParm })*@
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.RankSortParm })"><div>Weekly</div><div>OPUS Rank</div> </a>
+                </th>
+            }
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.First)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Last)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.STCRank)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WeeksPlayed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OverallPercentWon)
+                </td>
+                @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Factor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rank)
+                    </td>
+                }
+            </tr>
+        }
+
+    </table>

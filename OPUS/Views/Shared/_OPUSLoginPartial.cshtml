@@ -1,0 +1,77 @@
+﻿
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    @Html.ActionLink("STC OPUS Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+</div>
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        @if (Request.IsAuthenticated)
+        {
+            <li>@Html.ActionLink("OPUS Players", "Index", "OpusPlayers")</li>
+            <li>@Html.ActionLink("Court Assignment", "Index", "CourtAssignments")</li>
+            <li>@Html.ActionLink("Scoring", "Index", "Scorings")</li>
+            if (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin"))
+            {
+                <li>@Html.ActionLink("Help", "Help", "Home")</li>
+            }
+            if (User.IsInRole("Admin"))
+            {
+                <li>
+                    <div class="btn1-group">
+                        <a class="btn1 dropdown-toggle" data-toggle="dropdown" href="#">
+                            Admin
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu1">
+                            @if (User.IsInRole("Group Select"))
+                            {
+                                <li>@Html.ActionLink("Group Select", "Index", "AdminGroupSelect")</li>
+                            }
+                            @if (User.IsInRole("Settings Administration"))
+                            {
+                                <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+                            }
+                            @if (User.IsInRole("STC Player Administration"))
+                            {
+                                <li>@Html.ActionLink("STC Players", "Index", "STCPlayers")</li>
+                            }
+                            @if (User.IsInRole("User Role Administration"))
+                            {
+                                <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                                <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                            }
+                            @if (User.IsInRole("Session Administration"))
+                            {
+                                <li>@Html.ActionLink("Close Session", "Index", "CloseSession")</li>
+                                <li>@Html.ActionLink("Remove Session", "Index", "RemoveSession")</li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            }
+            if (User.IsInRole("Admin") || User.IsInRole("View Historical"))
+            {
+                <li>
+                    <div class="btn1-group">
+                        <a class="btn1 dropdown-toggle" data-toggle="dropdown" href="#">
+                            Historical
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu1">
+                            <li>@Html.ActionLink("Players", "Index", "PastOpusPlayers")</li>
+                            <li>@Html.ActionLink("Court Assignments", "Index", "PastCourtAssignments")</li>
+                            <li>@Html.ActionLink("Weekly Scores", "Index", "PastScorings")</li>
+                        </ul>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+    @Html.Partial("_LoginPartial")
+</div>
+

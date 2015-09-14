@@ -1,0 +1,52 @@
+﻿@model IEnumerable<OPUS.Models.CourtAssignment>
+@{
+    Layout = null;
+
+    @Styles.Render("~/Content/css")
+
+    <h4 style="margin-left: 40px">Court Assignments for @Session["courtDate"]</h4>
+    <table style="margin-left: 40px" border="1" cellpadding="3" cellspacing="0" width="1000">
+        <tbody style="font-family:verdana; color:black">
+            <tr style="font-weight:700">
+                <td width="20%" align="center">
+                    @Html.DisplayNameFor(model => model.Court)
+                </td>
+                <td width="20%" align="center">
+                    @Html.DisplayNameFor(model => model.Player1)
+                </td>
+                <td width="20%" align="center">
+                    @Html.DisplayNameFor(model => model.Player2)
+                </td>
+                <td width="20%" align="center">
+                    @Html.DisplayNameFor(model => model.Player3)
+                </td>
+                <td width="20%" align="center">
+                    @Html.DisplayNameFor(model => model.Player4)
+                </td>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr style="height: 40px ">
+                    <td width="20%" align="center">
+                        @Html.DisplayFor(modelItem => item.Court)
+                    </td>
+                    <td width="20%" align="center">
+                        @Html.DisplayFor(modelItem => item.Player1Name)
+                    </td>
+                    <td width="20%" align="center">
+                        @Html.DisplayFor(modelItem => item.Player2Name)
+                    </td>
+                    <td width="20%" align="center">
+                        @Html.DisplayFor(modelItem => item.Player3Name)
+                    </td>
+                    <td width="20%" align="center">
+                        @Html.DisplayFor(modelItem => item.Player4Name)
+                    </td>
+                </tr>
+            }
+    </table>
+    <br />
+    <a style="margin-left: 40px" class="btn btn-primary" href="#" onclick="window.print(); return false;">Print</a>
+    <a class="btn btn-primary" href="/CourtAssignments/Index">Close Page</a>
+}

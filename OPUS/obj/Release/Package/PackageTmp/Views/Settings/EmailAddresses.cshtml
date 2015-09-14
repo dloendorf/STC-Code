@@ -1,0 +1,40 @@
+﻿@model IEnumerable<OPUS.Models.Settings>
+
+
+    @{
+        ViewBag.Title = "EmailAddresses";
+    }
+
+    <h2>Settings</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.STCEmailAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OpusCoordinatorEmailAddress)
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.STCEmailAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OpusCoordinatorEmailAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Played)
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+        </table>
+    }

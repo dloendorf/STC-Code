@@ -1,0 +1,44 @@
+﻿@model IEnumerable<OPUS.ViewModels.EmailViewModel>
+
+@{
+    Layout = null;
+
+    var date = Session["courtDate"].ToString();
+    string Group = Session["Group"].ToString();
+    string sMessage = "OPUS Court Assignments for " + date;
+    string Monitor = "OPUS Monitor";
+    if (Group == "F") { sMessage = "Ladies' " + sMessage; Monitor = "Ladies'" + Monitor; }
+    if (Group == "M") { sMessage = "Men's " + sMessage; Monitor = "Men's" + Monitor; }
+
+
+    <h4>@sMessage</h4>
+    <table border="1" cellpadding="3" cellspacing="5" width="1000">
+    <tbody align="center" style="font-family:verdana; color:black">
+        <tr>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.Court)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="20%" align="center">
+                    @Html.DisplayFor(modelItem => item.Court)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Player1Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Player2Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Player3Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Player4Name)
+                </td>
+            </tr>
+        }
+    </table>
+}

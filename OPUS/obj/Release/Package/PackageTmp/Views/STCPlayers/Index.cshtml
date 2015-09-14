@@ -1,0 +1,54 @@
+﻿@model IEnumerable<OPUS.Models.OpusPlayer>
+
+@{
+    ViewBag.Title = "STC Players";
+}
+
+<h2>STC Players</h2>
+    <p><a class="btn btn-primary" href="/STCPlayers/Create">Add Player</a></p>
+
+    <table class="table">
+        <tr>
+            <th>
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.FirstSortParm })">First Name </a>
+            </th>
+            <th>
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.LastSortParm })">Last Name </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayCodes)
+            </th>
+            <th>
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.STCSortParm })">STC Rank </a>
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.First)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Last)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlayCodes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.STCRank)
+                </td>
+                <td>
+                    @Html.ActionLink("Update", "Edit", new { id = item.PlayerID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PlayerID })
+                </td>
+            </tr>
+        }
+
+    </table>

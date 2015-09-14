@@ -1,0 +1,197 @@
+﻿@model IEnumerable<OPUS.Models.CourtAssignment>
+@{
+    Layout = null;
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Site.css")
+    <style>
+        .break {
+            page-break-before: always;
+        }
+    </style>
+    <body>
+        <div display block; style="margin-left: 60px; width:650px">
+            <a name="backplayer"></a>
+            <h3>TAB FOR OPUS PLAYERS</h3>
+            <p>You will use this page to add, edit or delete an OPUS player and her STC ranking (for those currently signed up for OPUS.)  As explained later, you will assign a “factor” that helps to maintain players within their own skill grouping.  Each week, after you have entered game scores, OPUS will automatically update the percentage, performance and ranking columns.</p>
+            <p>The OPUS Player table can be sorted on any of the columns by selecting the column title. The first time you press the title the column will be sorted ascending - a second press will reverse the order.<span style="color:mediumslateblue"><i> NOTE: B+ and C+ are considered lower in the computer sort order than B and C</i></span></p>
+            <ul class="list-unstyled">
+                <li>
+                    <h4>How to Add a New OPUS Player:</h4>
+                    <ul>
+                        <li>Select the OPUS Player tab and then select the “Add Player” button in the upper left corner of the page to display the New Opus Player page.</li>
+                        <li>
+                            Fill in the form:
+                            <ul>
+                                <li>Player Name - in the format of last name, comma, first name</li>
+                                <li>STC Rank - the current STC ranking given to that player. Performance in OPUS does not affect the STC ranking.</li>
+                                <li>OPUS Factor - a number (10-2) that correlates with the current STC ranking of the player (A, B+, etc.). OPUS calculates a player’s weekly ranking by multiplying the factor by the weekly game won percentage. <span style="color:mediumslateblue"><i>NOTE: The factor helps to assign players within their relative grouping based on weekly scores. OPUS monitors can manually adjust factors up or down depending on players’ performance. When initially setting up your OPUS system, you will need to objectively give each player a starting factor.  The easiest system is to break down the B+, B and C+/C club rankings into a high, mid or low skill range for each player as shown below: A = 10 point factor; high B+ = 9; mid B+ = 8; low B+ = 7; high B = 6; mid B = 5; low B = 4; C+ = 3; C = 2</i></span></li>
+                            </ul>
+                        </li>
+                        <li>Select the 'Add Player' button to add the player.</li>
+                    </ul>
+                </li>
+                <li>
+                        <h4>How to Edit an OPUS Player:</h4>
+                        <ul>
+                            <li>Select the OPUS Player tab.</li>
+                            <li>Find the player you would like to edit.</li>
+                            <li>Select the 'Update' link at the right of line to display the 'Update Opus Player' page and show her current information.</li>
+                            <li>Update her information.</li>
+                            <li>Select the 'Update Player' button to complete the update.</li>
+                        </ul>
+                </li>
+                <li>
+                        <h4>How to Delete an OPUS Player:</h4>
+                        <ul>
+                            <li>Select the OPUS Player tab.</li>
+                            <li>Find the player you would like to delete.</li>
+                            <li>Select the 'Delete' link at the right of line to display the 'Delete Opus Player' page.</li>
+                            <li>Select the 'Delete Player' button to complete the deletion.</li>
+                        </ul>
+                </li>
+            </ul>
+            <br />
+            <a name="backcourt"></a>
+            <h3 class="break">TAB FOR COURT ASSIGNMENTS</h3>
+            <p>This page allows you to review court assignments for past weeks and to set up court assignments for the current week. There is also a 'Print Preview' button that will format the currently showing court assignments for the printer where you can then print it. The 'Email' button should be used when all court assignments are finished and you want to send them to the STC Coordinator so they can be added to the STC website for players to find their assigned court.</p>
+            <ul  class="list-unstyled">
+                <li>
+                    <h4>How to ‘Set This Week’s Players’:</h4>
+                    <ul>
+                        <li>Before you can begin to make court assignments, you will need to print this week’s OPUS player sign-up list from the STC site.</li>
+                        <li>Select ‘This Week’s Players’ button which will take you to a page that lists all STC members who are enrolled in OPUS.  Using the sign-up list from the STC site, check off the names of this week’s players.  When finished, press ‘Accept’.   CAUTION: you need to select all of this week’s players at once because, after you leave the check list page, those names will be unchecked.</li>
+                    </ul>
+                </li>
+                <li>
+                    <h4>How to Add a Court:</h4>
+                    <ul>
+                        <li>Select the 'New Date' entry from the 'Date' dropdown.</li>
+                        <li>Press the 'Add Court' button to open the Add Court page.</li>
+                        <li>
+                            Using a Court Assignment Sheet:
+                            <ul>
+                                <li>
+                                    At this point, it may be more efficient for pairing players if you create a blank template that contains
+                                    the number of courts needed for this week.  Use this template to fill in court assignments using information from the two tables to the
+                                    right of the page: “Previous Week Court Assignments” and “Weekly OPUS Rank” trying to pair partners of similar skill while not duplicating
+                                    partners from the previous week.  The “Weekly OPUS Rank” table contains only the names of those playing today whose names you checked off.
+                                    Remember to mix up court assignments from week to week so that there is no set order for who plays on which court.
+                                    NOTE: If two or more players have the same OPUS rank for this week, it means that two or more did not play last week but are signed up for
+                                    this week.  Their rank is what it was the last time they played.
+                                    <div style="margin-top:15px; margin-bottom:15px">
+                                        <table border="1" style="background-color:#FFFFCC;border:1px solid #FFCC00;color:#000000;width:100%" cellpadding="3" cellspacing="3">
+                                            <tr>
+                                                <td style="height:20px; text-align:center">Court</td>
+                                                <td style="height:20px; text-align:center">Player 1</td>
+                                                <td style="height:20px; text-align:center">Player 2</td>
+                                                <td style="height:20px; text-align:center">Player 3</td>
+                                                <td style="height:20px; text-align:center">Player 4</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height:40px; text-align:center">&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height:40px; text-align:center">&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height:40px; text-align:center">&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height:40px; text-align:center">&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Enter the new date in the 'Date' field where 'NewDate' is displayed. The date format is dd/mm/yyyy.</li>
+                        <li>Enter the court number for which you are assigning players.</li>
+                        <li>Select the players from the dropdowns next to the player fields.  <span style="color:mediumslateblue"><i>NOTE: They are listed by their current OPUS ranking in the same order as the “Weekly OPUS Rank” table to the right. Once players have been assigned to a court, their names will be removed from the two name lists.</i></span></li>
+                        <li>Press the 'Add Court' button to add the court and be returned to the previous screen where you will now see the court.</li>
+                        <li>To add another court just press the 'Add Court' button. The date field may read 'Select One' but you will notice that the date will be filled in when the 'Add Court' page displays.</li>
+                    </ul>
+                    <span style="color:mediumslateblue"><i>NOTE: On the 'Add Court' page you will have two tables available to help you add players: the top table shows players/courts for last week; this table allows you to avoid assigning the same players that were together last week and the bottom table shows current overall percentage and OPUS rank of each OPUS player based on last week’s matches. These two tables should be helpful in placing players on courts for the current week.</i></span>
+                </li>
+                @*<li>
+                        <h4>How to Add a Court for an Existing Date:</h4>
+                        <ul>
+                            <li>Select the desired date from the 'Date' dropdown.</li>
+                            <li>Press the 'Add Court' button to open the Add Court page.</li>
+                            <li>The 'Date' field will already be filled in.</li>
+                            <li>Enter the court number for which you are assigning players.</li>
+                            <li>Select the players from the dropdowns next to the player fields. <span style="color:mediumslateblue"><i>NOTE: They are listed by their current OPUS ranking in the same order as the “Weekly OPUS Rank” table to the right.</i></span></li>
+                            <li>Press the 'Add Court' button to add the court and be returned to the previous screen where you will now see the court.</li>
+                            <li>To add another court just press the 'Add Court' button.</li>
+                        </ul>
+                </li>*@
+                <li>
+                        <h4>How to Update Players Assigned to a Court:</h4>
+                    <ul>
+                        <li class="list-unstyled">
+                            <h5>Do this for all players you would like to change.</h5>
+                            <ul>
+                                <li>Select the 'Update' link to the right of the court you want to update. This will display the Update Court screen with all the fields filled in.</li>
+                                <li>Select the dropdown of the player(s) you would like to change and pick the new player(s).</li>
+                                <li>Change the court number if you are moving the players to a different court.</li>
+                                <li>Press the 'Update' button to update the court and be returned to the previous screen where you will now see the updated court.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                        <h4>How to Delete a Court:</h4>
+                        <ul>
+                            <li>Select the 'Delete' link to the right of the court you want to delete. This will display the Delete Court screen.</li>
+                            <li>Press the 'Delete' button to delete the court and return to the previous screen where the court will be gone.</li>
+                        </ul>
+                </li>
+                <li>
+                        <h4>How to View Previous Court Assignments:</h4>
+                        <ul>
+                            <li>Select the desired date from the 'Date' field dropdown.</li>
+                            <li>The court assignments for that date will be displayed.</li>
+                        </ul>
+                </li>
+            </ul>
+            <br />
+            <h3>TAB FOR SCORING</h3>
+            <p>This is the page you will use, after games have been played, to enter the number of games played/won for each player.  OPUS will then calculate and enter information showing each player’s percentage performance that week, her overall percentage rank for OPUS games and her current OPUS ranking.  Colored bands represent player’s STC rank.  By clicking on any of the column titles (ie. “Weekly OPUS Rank”), any column can be resorted in reverse order.</p>
+                <ul>
+                    <li>The list consists only of those ladies who played matches the current week.</li>
+                    <li>The color bands are to help you see if a player has performed above or below her current STC rank level.  If you see consistent up or down movement, you can change her factor rating.  Band colors represent: Red = STC “A” level; blue = B+; green = B; tan = C+; yellow = C</li>
+                    <li>To resort a column, click on the column heading, and that column will automatically sort in reverse order.</li>
+                </ul>
+            <ul  class="list-unstyled">
+                <li>
+                        <h4>How to Update Scores:</h4>
+                        <ul>
+                            <li>Select the 'Score Update' link to the right of the player you for which you would like to add/update scores.</li>
+                            <li>In the Score Update screen for the selected player enter the Played and Won values.</li>
+                            <li>Press the 'Update' button and return to the scores page. The score page will now show that player’s games played/won, her percent won today, her overall percentage in OPUS matches and her OPUS rank based on this week’s performance.</li>
+                        </ul>
+                </li>
+            </ul>
+            <br />
+        </div>
+    </body>
+    <div class="no-print">
+        <a style="margin-left: 60px" class="btn btn-primary" href="#" onclick="window.print(); return false;">Print</a>
+        <a class="btn btn-primary" href="/Home/Help">Close Page</a>
+    </div>
+}

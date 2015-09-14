@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="OpusContext-Web.config Connection String" description="OpusContext Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:b1jmx7honx.database.windows.net,1433;Database=SBOPUS_db;User Id=sbopusadmin@b1jmx7honx;Password=TennisIsGr8" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\David\\Documents\\Visual\ Studio\ 2015\\Projects\\OPUS\\OPUS\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='OpusContext']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\David\\Documents\\Visual\ Studio\ 2015\\Projects\\OPUS\\OPUS\\obj\\Release\\Package\\PackageTmp\\bin\\Web\.config$" match="/configuration/connectionStrings/add[@name='OpusContext']/@connectionString" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:b1jmx7honx.database.windows.net,1433;Database=SBOPUS_db;User Id=sbopusadmin@b1jmx7honx;Password=TennisIsGr8" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\David\\Documents\\Visual\ Studio\ 2015\\Projects\\OPUS\\OPUS\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\David\\Documents\\Visual\ Studio\ 2015\\Projects\\OPUS\\OPUS\\obj\\Release\\Package\\PackageTmp\\bin\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

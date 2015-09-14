@@ -1,0 +1,125 @@
+﻿@model IEnumerable<OPUS.Models.PastScoring>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Previous Seasons Weekly Scores</h2>
+<br/>
+<div class="container-fluid">
+    <div class="row">
+        <div>
+            @using (Html.BeginForm("SelectSeason", "PastScorings", FormMethod.Post, new { id = "SelectSeason" }))
+            {
+                <table>
+                    @*<tr><td height="30"></td></tr>*@
+                    <tr>
+                        <td width="100px">Select Session</td>
+                        <td>
+                            @Html.DropDownList("Season", (IEnumerable<SelectListItem>)ViewBag.Seasons, "--Select One--", new { onchange = "document.getElementById('SelectSeason').submit();" })
+                        </td>
+                    </tr>
+                    <tr><td height="30"></td></tr>
+                </table>
+            }
+        </div>
+        <div>
+            @using (Html.BeginForm("SelectDate", "PastScorings", FormMethod.Post, new { id = "SelectDate" }))
+            {
+                <table>
+                    @*<tr><td height="30"></td></tr>*@
+                    <tr>
+                        <td width="100px">Select Date</td>
+                        <td>
+                            @Html.DropDownList("Date", (IEnumerable<SelectListItem>)ViewBag.PlayedDates, "--Select One--", new { onchange = "document.getElementById('SelectDate').submit();" })
+                        </td>
+                    </tr>
+                    <tr><td height="30"></td></tr>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Name)*@
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Played)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Won)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PercentWon)*@
+            @*@Html.ActionLink("% Won Today", "Index", new { sortOrder = ViewBag.PercentWonSortParm })*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.PercentWonSortParm })"><div>% Won</div><div>Today</div> </a>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.OverallPercentWon)*@
+            @*@Html.ActionLink(string.Format("% Won Overall"), "Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })"><div>% Won</div><div>Overall</div> </a>
+        </th>
+        @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+        {
+            <th>
+                @*@Html.DisplayNameFor(model => model.OpusRank)*@
+                @*@Html.ActionLink("Weekly OPUS Rank", "Index", new { sortOrder = ViewBag.OpusRankSortParm })*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.OpusRankSortParm })"><div>Weekly</div><div>OPUS Rank</div> </a>
+            </th>
+        }
+        <th></th>
+    </tr>
+
+    @{ var rowColor = "f5c4c4"; }
+    @foreach (var item in Model)
+    {
+        int ib = item.Name.IndexOf('(');
+        int ie = item.Name.IndexOf(')');
+        int il = ie - ib;
+        string stc = item.Name.Substring(ib + 1, il - 1);
+        //if (stc.Equals("A")) { rowColor = "f5c4c4"; }
+        //else if (item.Rank == 2 || item.Rank == 3 || item.Rank == 4) { rowColor = "b1baf5"; }
+        //else if (item.Rank == 5 || item.Rank == 6 || item.Rank == 7) { rowColor = "c3f1ae"; }
+        //else if (item.Rank == 8 || item.Rank == 9 || item.Rank == 10) { rowColor = "f1f2a7"; }
+        if (stc.Equals("A")) { rowColor = "f5c4c4"; }
+        else if (stc.Equals("B+")) { rowColor = "b1baf5"; }
+        else if (stc.Equals("B")) { rowColor = "c3f1ae"; }
+        else if (stc.Equals("C+")) { rowColor = "FFF6CE"; }
+        else if (stc.Equals("C")) { rowColor = "f1f2a7"; }
+
+
+        <tr style="background: #@rowColor;">
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Played)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Won)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentWon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OverallPercentWon)
+            </td>
+            @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpusRank)
+                </td>
+            }
+        </tr>
+    }
+</table>

@@ -1,0 +1,62 @@
+﻿@model OPUS.Models.CourtAssignment
+@{
+    ViewBag.Title = "ThisWeeksPlayers";
+}
+<style>
+    .newspaper { width: 850px;
+        -webkit-column-count: 4; /* Chrome, Safari, Opera */
+        -moz-column-count: 4; /* Firefox */
+        column-count: 4;
+
+    -webkit-column-gap: 10px; /* Chrome, Safari, Opera */
+     -moz-column-gap: 10px; /* Firefox */
+     column-gap: 10px;
+
+    -webkit-column-width: 200px; /* Chrome, Safari, Opera */
+     column-width: 200px;
+
+         -webkit-column-rule: 2px solid darkgreen; /* Chrome, Safari, Opera */
+     -moz-column-rule: 2px solid darkgreen; /* Firefox */
+     column-rule: 2px solid darkgreen;
+    }
+
+    h4 {
+     -webkit-column-span: all; /* Chrome, Safari, Opera */
+     column-span: all;
+ } 
+
+    .colwidth{
+    width:180px;
+    }
+    .checkheader{
+    position:center;
+    }
+
+</style>
+
+<h2>Select This Week's Players</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+
+    <div  class="newspaper">
+        @*<h4>OPUS Players</h4>*@
+        @{
+            var grid = new WebGrid(source: ViewBag.Players, canPage:false, defaultSort: "Name");
+            @grid.GetHtml(htmlAttributes: new { id = "OPUSPlayers" }, columns: grid.Columns(
+                                    grid.Column(header: HttpUtility.HtmlDecode("&#10004;"), format: @<text><input class="checkboxopus" id="selectChkBx" name="selectChkBx" type="checkbox" value="@item.ID" /></text>),
+                                    grid.Column("Name", style: "colwidth")), tableStyle: "PGrid", headerStyle: "Header");
+            }
+    </div>
+    <br/>
+    <div class="form-group">
+        <div class="col-md-6">
+            <input type="submit" value="Accept" class="btn btn-primary" />
+            <a class="btn btn-primary" href="/CourtAssignments/Index">Cancel</a>
+        </div>
+    </div>
+    <br/>
+}

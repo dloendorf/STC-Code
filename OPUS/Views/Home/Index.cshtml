@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (Session != null && Session["Site"] != null)
+{
+    if (Session["Site"].ToString() == "OPUS")
+    {
+        @Html.Partial("_OPUSHomePartial")
+    }
+    else
+    {
+        @Html.Partial("_ScrambleHomePartial")
+    }
+}
+else
+{
+    @Html.Partial("_OPUSHomePartial")
+}
+
+@ViewBag.URL

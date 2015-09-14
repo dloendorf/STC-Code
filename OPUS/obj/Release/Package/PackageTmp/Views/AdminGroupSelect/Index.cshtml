@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Select Group";
+}
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @if (Session["Group"].ToString() == "M")
+                {
+                    <span>Men's:</span>
+                    @Html.RadioButton("Gender", "M", new { @checked = true, @style = "width:auto;background:none;border:none" })
+                    <span> Or Ladies':</span>
+                    @Html.RadioButton("Gender", "F", new { @style = "width:auto;background:none;border:none" })
+                }
+                else
+                {
+                    <span>Men's:</span>
+                    @Html.RadioButton("Gender", "M", new { @style = "width:auto;background:none;border:none" })
+                    <span> Or Ladies':</span>
+                    @Html.RadioButton("Gender", "F", new { @checked = true, @style = "width:auto;background:none;border:none" })
+                }
+            </div>
+        </div>
+        <br />
+        <div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="OK" class="btn btn-primary" />
+                        </div>
+                    </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

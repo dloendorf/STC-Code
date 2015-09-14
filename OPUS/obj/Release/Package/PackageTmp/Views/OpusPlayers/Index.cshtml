@@ -1,0 +1,88 @@
+﻿@model IEnumerable<OPUS.Models.OpusPlayer>
+
+@{
+    ViewBag.Title = "Opus Players";
+}
+
+<h2>Opus Players</h2>
+@if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+{
+    <p><a class="btn btn-primary" href="/OpusPlayers/Create">Add Player</a></p>
+}
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.First)*@
+            @*@Html.ActionLink("First", "Index", new { sortOrder = ViewBag.FirstSortParm})*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.FirstSortParm })"><div>First</div><div>Name</div> </a>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Last)*@
+            @*@Html.ActionLink("Last", "Index", new { sortOrder = ViewBag.LastSortParm})*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.LastSortParm })"><div>Last</div><div>Name</div> </a>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.STCRank)*@
+            @*@Html.ActionLink("STC Rank", "Index", new { sortOrder = ViewBag.STCSortParm})*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.STCSortParm })"><div>STC</div><div>Rank</div> </a>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.OverallPercentWon)*@
+            @*@Html.ActionLink("% Won Overall", "Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })"><div>% Won</div><div>Overall</div> </a>
+        </th>
+        @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin") || User.IsInRole("STCBoard")))
+        {
+            <th>
+                @*@Html.DisplayNameFor(model => model.Factor)*@
+                @*@Html.ActionLink("Factor", "Index", new { sortOrder = ViewBag.FactorSortParm })*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.FactorSortParm })"><div>OPUS</div><div>Factor</div> </a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Rank)*@
+                @*@Html.ActionLink("Weekly OPUS Rank", "Index", new { sortOrder = ViewBag.RankSortParm })*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.RankSortParm })"><div>Weekly</div><div>OPUS Rank</div> </a>
+            </th>
+        }
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.First)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Last)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.STCRank)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OverallPercentWon)
+        </td>
+            @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin") || User.IsInRole("STCBoard")))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Factor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rank)
+                </td>
+            }
+            @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+            {
+                <td>
+                    @Html.ActionLink("Update", "Edit", new { id = item.PlayerID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PlayerID })
+                </td>
+            }
+    </tr>
+}
+
+</table>

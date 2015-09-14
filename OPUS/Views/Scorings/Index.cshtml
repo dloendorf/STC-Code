@@ -1,0 +1,125 @@
+﻿@model IEnumerable<OPUS.Models.Scoring>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Weekly Scoring and Ranking</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+
+@using (Html.BeginForm("SelectDate", "Scorings", FormMethod.Post, new { id = "TheForm" }))
+{
+    <table>
+        <tr><td height="30"></td></tr>
+        <tr>
+            <td width="100px">Select Date</td>
+            <td>
+                @Html.DropDownList("Date", (IEnumerable<SelectListItem>)ViewBag.playedDates, "--Select One--",new { onchange = "document.getElementById('TheForm').submit();" })
+            </td>
+        </tr>
+        <tr><td height="30"></td></tr>
+    </table>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.ActionLink("First", "Index", new { sortOrder = ViewBag.FirstSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Last", "Index", new { sortOrder = ViewBag.LastSortParm })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Played)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Won)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PercentWon)*@
+            @*@Html.ActionLink("% Won Today", "Index", new { sortOrder = ViewBag.PercentWonSortParm })*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.PercentWonSortParm })"><div>% Won</div><div>Today</div> </a>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.OverallPercentWon)*@
+            @*@Html.ActionLink(string.Format("% Won Overall"), "Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })*@
+            <a href="@Url.Action("Index", new { sortOrder = ViewBag.OverallPercentWonSortParm })"><div>% Won</div><div>Overall</div> </a>
+        </th>
+        @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin") || User.IsInRole("STCBoard")))
+        {
+            <th>
+                @*@Html.DisplayNameFor(model => model.OpusRank)*@
+                @*@Html.ActionLink("Weekly OPUS Rank", "Index", new { sortOrder = ViewBag.OpusRankSortParm })*@
+                <a href="@Url.Action("Index", new { sortOrder = ViewBag.OpusRankSortParm })"><div>Weekly</div><div>OPUS Rank</div> </a>
+            </th>
+        }
+        <th></th>
+    </tr>
+
+        @{ var rowColor = "f5c4c4"; }
+        @foreach (var item in Model)
+        {
+            int ib = item.Name.IndexOf('(');
+            int ie = item.Name.IndexOf(')');
+            int il = ie - ib;
+            string stc = item.Name.Substring(ib+1, il-1);
+            //if (stc.Equals("A")) { rowColor = "f5c4c4"; }
+            //else if (item.Rank == 2 || item.Rank == 3 || item.Rank == 4) { rowColor = "b1baf5"; }
+            //else if (item.Rank == 5 || item.Rank == 6 || item.Rank == 7) { rowColor = "c3f1ae"; }
+            //else if (item.Rank == 8 || item.Rank == 9 || item.Rank == 10) { rowColor = "f1f2a7"; }
+            if (stc.Equals("A")) { rowColor = "f5c4c4"; }
+            else if (stc.Equals("B+")) { rowColor = "b1baf5"; }
+            else if (stc.Equals("B")) { rowColor = "c3f1ae"; }
+            else if (stc.Equals("C+")) { rowColor = "FFF6CE"; }
+            else if (stc.Equals("C")) { rowColor = "f1f2a7"; }
+
+
+    <tr style="background: #@rowColor;">
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.First)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Last)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Played)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Won)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PercentWon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OverallPercentWon)
+        </td>
+        @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin") || User.IsInRole("STCBoard")))
+        {
+            <td>
+                @Html.DisplayFor(modelItem => item.OpusRank)
+            </td>
+        }
+        @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+        {
+            <td>
+                @Html.ActionLink("Score Update", "Edit", new { id = item.ID })
+            </td>
+        }
+    </tr>
+}
+</table>
+@*@using (Html.BeginForm("Rank", "Scorings"))
+{<div>
+    <input class="btn btn-primary" type="submit" value="Rank Players" />
+ </div>
+}*@

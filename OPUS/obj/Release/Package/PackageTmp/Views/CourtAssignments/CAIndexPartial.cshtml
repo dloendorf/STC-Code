@@ -1,0 +1,32 @@
+﻿@model IEnumerable<OPUS.Models.CourtAssignment>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Court)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player4)
+            </td>
+            @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+            {
+                <td>
+                    @Html.ActionLink("Update", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            }
+        </tr>
+    }

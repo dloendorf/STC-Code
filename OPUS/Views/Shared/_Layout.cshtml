@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="@Url.Content("~/content/favicon.ico")" />
+    <title>STC Play Management</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+        @if (Session != null && Session["Site"] != null)
+            {
+                if (Session["Site"].ToString() == "OPUS")
+                {
+                    @Html.Partial("_OPUSLoginPartial")
+                }
+                else
+                {
+                    @Html.Partial("_ScrambleLoginPartial")
+                }
+            }
+            else
+            {
+                @Html.Partial("_OPUSLoginPartial")
+            }
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - SaddleBrooke Tennis Club </p>
+            @*<p>Site URL = @Session["URL"].ToString()</p>*@
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

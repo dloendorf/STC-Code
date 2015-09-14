@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "Court Assignment Sheet";
+    Layout = null;
+}
+@Styles.Render("~/Content/css")
+
+<body class="body-content">
+    <div style="margin-left:25px; margin-right:25px">
+        <h2>Court Assignment Sheet</h2>
+        <table border="1" style="background-color:#FFFFFF;border:1px solid #000000;color:#000000;width:100%" cellpadding="3" cellspacing="3">
+            <tr>
+                <td style="height:30px; width:80px; text-align:center">Court</td>
+                <td style="height:30px; text-align:center">Player 1</td>
+                <td style="height:30px; text-align:center">Player 2</td>
+                <td style="height:30px; text-align:center">Player 3</td>
+                <td style="height:30px; text-align:center">Player 4</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="height:40px; text-align:center">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<br/>
+
+<div class="no-print">
+    <a style="margin-left: 60px" class="btn2 btn2-success" href="#" onclick="window.print(); return false;">Print</a>
+    @{
+        string s = TempData["Return"].ToString();
+        if (s == "Create")
+        {
+            <a class="btn2 btn2-success" href="/CourtAssignments/Create">Close Page</a>
+        }
+        else
+        {
+            <a class="btn2 btn2-success" href="/Home/Help">Close Page</a>
+        }
+    }
+</div>

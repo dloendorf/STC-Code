@@ -1,0 +1,88 @@
+﻿@model IEnumerable<OPUS.Models.CourtAssignment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Court Assignments</h2>
+
+@if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+{
+    <a class="btn btn-primary" href="/CourtAssignments/ThisWeeksPlayers">Set This Week's Players</a>
+    <a class="btn btn-primary" href="/CourtAssignments/Create">Add Court</a>
+}
+@using (Html.BeginForm("SelectDate", "CourtAssignments", FormMethod.Post, new { id = "TheForm" }))
+{
+    <table>
+        <tr><td height="30"></td></tr>
+        <tr>
+            <td width="100px">Select Date</td>
+            <td>
+                @Html.DropDownList("Date", (IEnumerable<SelectListItem>)ViewBag.CourtDates, "--Select One--", new { onchange = "document.getElementById('TheForm').submit();" })
+            </td>
+        </tr>
+        <tr><td height="30"></td></tr>
+    </table>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Court)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Player1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Player2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Player3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Player4)
+        </th>
+        <th></th>
+    </tr>
+
+            @Html.Partial("CAIndexPartial", Model)
+    @*@foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Court)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Player4)
+            </td>
+            @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+            {
+                <td>
+                    @Html.ActionLink("Update", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            }
+        </tr>
+    }*@
+</table>
+<br />
+<a class="btn btn-primary" href="/CourtAssignments/Print">Print Preview</a>
+@if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
+{
+    <a class="btn btn-primary" href="/CourtAssignments/Email">Email Court Assignments To STC Coordinator</a>
+}
