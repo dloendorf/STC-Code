@@ -15,8 +15,9 @@ namespace OPUS.Controllers
         {
             var request = ControllerContext.RequestContext.HttpContext.Request;
             //System.Web.HttpContext context = System.Web.HttpContext.Current;
-            Session["Site"] = "OPUS";
-            Session["playCode"] = "O";
+            Session["Site"] = "Scramble";
+            Session["playCode"] = "S";
+            Session["Group"] = "";
             Session["URL"] = "Not Set";
             string uri = request.Url.ToString();
             Session["URL"] = uri;

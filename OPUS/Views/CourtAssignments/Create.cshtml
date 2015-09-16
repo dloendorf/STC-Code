@@ -108,25 +108,56 @@
                         <div class="col-md-12">
                             <h4>Previous Week Court Assignments (@Session["previousCourtDate"])</h4>
                             @{
-                                var grid = new WebGrid(source: ViewBag.PreviousAssign);
+                                if (Session["PlayCode"].ToString().Equals("S"))
+                                {
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="color-box" style="background-color:rgba(131,117,69,1); color:white; text-align:center">Early Courts</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                }
+                                var grid = new WebGrid(source: ViewBag.PreviousAssignEarly);
                                 @grid.GetHtml(htmlAttributes: new { id = "CourtAssignment" }, columns: grid.Columns(
                                 grid.Column("Court"),
                                 grid.Column("Player1", header: "Player 1"),
                                 grid.Column("Player2", header: "Player 2"),
                                 grid.Column("Player3", header: "Player 3"),
                                 grid.Column("Player4", header: "Player 4")), tableStyle: "PGrid", headerStyle: "Header");
+
+                                if (@ViewBag.LateCount != 0)
+                                {
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div class="color-box" style="background-color:rgba(131,117,69,1); color:white; text-align:center">Late Courts</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    grid = new WebGrid(source: ViewBag.PreviousAssignLate);
+                                    @grid.GetHtml(htmlAttributes: new { id = "CourtAssignment" }, columns: grid.Columns(
+                                    grid.Column("Court"),
+                                    grid.Column("Player1", header: "Player 1"),
+                                    grid.Column("Player2", header: "Player 2"),
+                                    grid.Column("Player3", header: "Player 3"),
+                                    grid.Column("Player4", header: "Player 4")), tableStyle: "PGrid", headerStyle: "Header");
+                                }
                             }
                         </div>
-                        <div id ="opusPlayers" class="col-md-12">
-                            <h4>@ViewBag.WebGridTitle</h4>
-                            @{
-                                var grid1 = new WebGrid(source: ViewBag.PlayerWebGridInfo, canPage: false, defaultSort:"Rank");
-                                @grid1.GetHtml(htmlAttributes: new { id = "OPUSPlayers" }, columns: grid1.Columns(
+                        @if (Session["PlayCode"].ToString().Equals("O"))
+                        {
+                            <div id="opusPlayers" class="col-md-12">
+                                <h4>@ViewBag.WebGridTitle</h4>
+                                @{
+                                    var grid1 = new WebGrid(source: ViewBag.PlayerWebGridInfo, canPage: false, defaultSort: "Rank");
+                                    @grid1.GetHtml(htmlAttributes: new { id = "OPUSPlayers" }, columns: grid1.Columns(
                                 grid1.Column("Name"),
                                 grid1.Column("OverallPercentWon", header: "% Won Overall"),
                                 grid1.Column("Rank", header: "Weekly OPUS Rank")), tableStyle: "PGrid", headerStyle: "Header");
-                            }
-                        </div>
+                                }
+                            </div>
+                        }
                     </div>
                  </div>
             </div>
