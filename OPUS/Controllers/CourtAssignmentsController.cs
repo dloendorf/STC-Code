@@ -93,15 +93,32 @@ namespace OPUS.Controllers
 
         private void PreviousCourtAssignments(string date)
         {
-            List<PreviousAssignment> previous = new List<PreviousAssignment>();
+            List<PreviousAssignment> previousearly = new List<PreviousAssignment>();
             var courts = db1.Assignments;
             string Group = Session["Group"].ToString();
-            var result = (from m in courts where m.Date.Equals(date) && m.Group.Equals(Group) select m);
+            var result = (from m in courts where m.Date.Equals(date) && m.Group.Equals(Group) && m.Time.Equals("Early") select m);
             foreach (var item in result)
             {
-                previous.Add(new PreviousAssignment { Court = (int)item.Court, Player1 = item.Player1, Player2 = item.Player2, Player3 = item.Player3, Player4 = item.Player4 });
+                previousearly.Add(new PreviousAssignment { Court = (int)item.Court, Player1 = item.Player1, Player2 = item.Player2, Player3 = item.Player3, Player4 = item.Player4 });
             }
-            ViewBag.PreviousAssign = previous;
+            ViewBag.PreviousAssignEarly = previousearly;
+
+            int count = (from row in db1.Assignments
+                         where row.Time == "Late" & row.Date.Equals(date)
+                         select row).Count();
+            ViewBag.LateCount = count;
+
+            if(count != 0)
+            {
+                List<PreviousAssignment> previouslate = new List<PreviousAssignment>();
+                result = (from m in courts where m.Date.Equals(date) && m.Group.Equals(Group) && m.Time.Equals("Late") select m);
+                foreach (var item in result)
+                {
+                    previouslate.Add(new PreviousAssignment { Court = (int)item.Court, Player1 = item.Player1, Player2 = item.Player2, Player3 = item.Player3, Player4 = item.Player4 });
+                }
+                ViewBag.PreviousAssignLate = previouslate;
+            }
+
         }
 
         private void GetPreviousCourtDate(List<SelectListItem> dates)
