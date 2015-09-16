@@ -25,6 +25,7 @@
                     }
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                     <div class="form-group">
                         @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
@@ -32,6 +33,22 @@
                             @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    @if(Session["PlayCode"].ToString().Equals("S"))
+                    {
+                        var time = new List<SelectListItem> { new SelectListItem { Text = "Early", Value = "Early" }, new SelectListItem { Text = "Late", Value = "Late" } };
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Time, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(model => model.Time, new SelectList(time, "Value", "Text"), "Select Time")
+                                @Html.ValidationMessageFor(model => model.Time, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("Time", "Early")
+                    }
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.Court, htmlAttributes: new { @class = "control-label col-md-3" })
