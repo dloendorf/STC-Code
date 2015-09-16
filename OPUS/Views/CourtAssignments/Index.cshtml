@@ -26,6 +26,14 @@
 }
 
 <table class="table">
+    @if (Session["PlayCode"].ToString().Equals("S"))
+    {
+        <tr>
+            <td>
+                <div class="color-box" style="background-color:rgba(131,117,69,1); color:white; text-align:center">Early Courts</div>
+            </td>
+        </tr>
+    }
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Date)
@@ -47,10 +55,44 @@
         </th>
         <th></th>
     </tr>
-
-            @Html.Partial("CAIndexPartial", Model)
+    @{
+        ViewBag.Time = "Early";
+    }
+    @Html.Partial("CAIndexPartial", Model)
+    @if(ViewBag.LateCount != 0)
+    {
+        <tr>
+            <td>
+                <div class="color-box" style="background-color: rgba(131,117,69,1); color:white; text-align:center">Late Courts</div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Court)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player4)
+            </th>
+            <th></th>
+        </tr>
+        ViewBag.Time = "Late";
+        @Html.Partial("CAIndexPartial", Model)
+    }
 </table>
 <br />
+
 <a class="btn btn-primary" href="/CourtAssignments/Print">Print Preview</a>
 @if (Request.IsAuthenticated && (User.IsInRole("Ladies Monitor") || User.IsInRole("Mens Monitor") || User.IsInRole("Admin")))
 {

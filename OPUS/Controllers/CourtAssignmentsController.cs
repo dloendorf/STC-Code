@@ -38,6 +38,11 @@ namespace OPUS.Controllers
                 }
             } else date = Session["courtDate"].ToString();
 
+            int count = (from row in db.Assignments
+                         where row.Time == "Late" & row.Date.Equals(date)
+                         select row).Count();
+            ViewBag.LateCount = count;
+
             var assignmentData = from a in db.Assignments
                                  where a.Date.Equals(date) && a.Group.Equals(Group)
                                  select a;
@@ -134,6 +139,12 @@ namespace OPUS.Controllers
             var courts = db1.Assignments;
             if(Session["courtDate"] == null) return RedirectToAction("Index");
             var date = Session["courtDate"].ToString();
+
+            int count = (from row in db.Assignments
+                         where row.Time == "Late" & row.Date.Equals(date)
+                         select row).Count();
+            ViewBag.LateCount = count;
+
             var assignmentData = from a in db.Assignments
                                  where a.Date.Equals(date) && a.Group.Equals(Group) && a.PlayCode.Equals(playcode)
                                  select a;
@@ -284,7 +295,7 @@ namespace OPUS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Ladies Monitor,Mens Monitor")]
-        public ActionResult Create([Bind(Include = "ID,Date,Court,Player1ID,Player2ID,Player3ID,Player4ID")] CourtAssignment courtAssignment)
+        public ActionResult Create([Bind(Include = "ID,Date,Time,Court,Player1ID,Player2ID,Player3ID,Player4ID")] CourtAssignment courtAssignment)
         {
             List<PlayerList> players = util.GetPlayers(Session["Group"].ToString(), Session["PlayCode"].ToString());
             courtAssignment.Player1 = players.Where(x => x.ID == courtAssignment.Player1ID).First().Name;
@@ -355,13 +366,16 @@ namespace OPUS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Ladies Monitor,Mens Monitor")]
-        public ActionResult Edit([Bind(Include = "ID,Group,PlayCode,Date,Court,Player1ID,Player2ID,Player3ID,Player4ID")] CourtAssignment courtAssignment)
+        public ActionResult Edit([Bind(Include = "ID,Group,PlayCode,Date,Time,Court,Player1ID,Player2ID,Player3ID,Player4ID")] CourtAssignment courtAssignment)
         {
             List<PlayerList> players = util.GetPlayers(Session["Group"].ToString(), Session["PlayCode"].ToString());
             courtAssignment.Player1 = players.Where(x => x.ID == courtAssignment.Player1ID).First().Name;
             courtAssignment.Player2 = players.Where(x => x.ID == courtAssignment.Player2ID).First().Name;
             courtAssignment.Player3 = players.Where(x => x.ID == courtAssignment.Player3ID).First().Name;
             courtAssignment.Player4 = players.Where(x => x.ID == courtAssignment.Player4ID).First().Name;
+
+            //Not sure why this must be done but for some reason a Group of "" is returning as null so need to rest to ""
+            if (courtAssignment.Group == null) courtAssignment.Group = "";
 
             if (ModelState.IsValid)
             {
@@ -525,6 +539,22 @@ namespace OPUS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CourtAssignment courtAssignment = db.Assignments.Find(id);
+
+
+            //Check if Scoring has been started for this date and if so update players
+            if (db2.Scores.Where(u => u.Date == courtAssignment.Date).Any())
+            {
+                //Remove Players
+                var player = db2.Scores.First(u => u.STCPlayerID == courtAssignment.Player1ID && u.Date == courtAssignment.Date);
+                db2.Scores.Remove(player);
+                player = db2.Scores.First(u => u.STCPlayerID == courtAssignment.Player2ID && u.Date == courtAssignment.Date);
+                db2.Scores.Remove(player);
+                player = db2.Scores.First(u => u.STCPlayerID == courtAssignment.Player3ID && u.Date == courtAssignment.Date);
+                db2.Scores.Remove(player);
+                player = db2.Scores.First(u => u.STCPlayerID == courtAssignment.Player4ID && u.Date == courtAssignment.Date);
+                db2.Scores.Remove(player);
+                db2.SaveChanges();
+            }
             db.Assignments.Remove(courtAssignment);
             db.SaveChanges();
             return RedirectToAction("Index");
