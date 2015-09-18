@@ -14,13 +14,13 @@ namespace OPUS.Models
         public string Last { get; set; }
         [Display(Name = "Play Codes - N,S,O")]
         public string PlayCodes { get; set; }
-        [Display(Name = "Last, First")]
-        [RegularExpression(@"^([A-Za-z]+, [A-Za-z]+)$", ErrorMessage = "Lastname, Firstname")]
+        //[Display(Name = "First Last")]
+        //[RegularExpression(@"^([A-Za-z]+, [A-Za-z]+)$", ErrorMessage = "Lastname, Firstname")]
         public string Name { get; set; }
         [Display(Name = "STC Rank")]
         [RegularExpression(@"^(A|B\+|B|C\+|C)$", ErrorMessage = "Ranking must be A, B+, B, C+, C")]
         public string STCRank { get; set; }
-        [RegularExpression(@"^([1-9]|10)$", ErrorMessage = "Factor must be 10 to 1 where 10 is high and 1 is low")]
+        [RegularExpression(@"^([0-9]|10)$", ErrorMessage = "Factor must be 10 to 0 where 10 is high and 0 is low")]
         [Display(Name = "Opus Factor")]
         public int Factor { get; set; }
         [Display(Name = "% Won")]
