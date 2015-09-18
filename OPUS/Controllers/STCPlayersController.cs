@@ -14,6 +14,7 @@ namespace OPUS.Controllers
     public class STCPlayersController : Controller
     {
         private OpusContext dbnew = new OpusContext();
+        private Util util = new Util();
 
         // GET: OpusPlayers
         [Authorize]
@@ -142,11 +143,35 @@ namespace OPUS.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: OpusPlayers/ReLoad
+        [Authorize(Roles = "Admin")]
+        public ActionResult ReLoad()
+        {
+            return View();
+        }
+        // POST: OpusPlayers/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ReLoad(FormCollection form)
+        {
+            var pastedtext = form.GetValues("pastedtext");
+
+            //Create Name list from pastedtext...each row should end with /r/n and of the form: "Name (code 1)..(Code n)"  "phone" "Member Type" "Rating"
+
+            util.LoadMemberList(pastedtext);
+
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 dbnew.Dispose();
+                util.Dispose(true);
             }
             base.Dispose(disposing);
         }

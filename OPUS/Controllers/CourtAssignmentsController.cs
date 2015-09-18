@@ -59,6 +59,7 @@ namespace OPUS.Controllers
         public ActionResult ThisWeeksPlayers(FormCollection form)
         {
             var checkedValues = form.GetValues("selectChkBx");
+            var pastedtext = form.GetValues("pastedtext");
             if (checkedValues != null)
             {
                 List<OPUSPlayerInfoList> players = new List<OPUSPlayerInfoList>();

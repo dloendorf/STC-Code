@@ -42,6 +42,14 @@
 </div>
 
     <table class="table">
+        @if (Session["PlayCode"].ToString().Equals("S"))
+        {
+            <tr>
+                <td>
+                    <div class="color-box" style="background-color:rgba(131,117,69,1); color:white; text-align:center">Early Courts</div>
+                </td>
+            </tr>
+        }
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Date)
@@ -66,26 +74,84 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Court)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Player1)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Player2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Player3)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Player4)
-                </td>
-            </tr>
+            if (item.Time == "Early")
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Court)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Player1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Player2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Player3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Player4)
+                    </td>
+                </tr>
+            }
         }
+    @if (ViewBag.LateCount != 0)
+    {
+        <tr>
+            <td>
+                <div class="color-box" style="background-color: rgba(131,117,69,1); color:white; text-align:center">Late Courts</div>
+            </td>
+        </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Court)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Player1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Player2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Player3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Player4)
+                </th>
+                <th></th>
+            </tr>
 
+            foreach (var item in Model)
+            {
+                if (item.Time == "Late")
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Court)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Player1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Player2)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Player3)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Player4)
+                        </td>
+                    </tr>
+                }
+            }
+    }
     </table>

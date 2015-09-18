@@ -23,8 +23,8 @@ namespace OPUS.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
 
-        public System.Data.Entity.DbSet<OPUS.Models.PastOpusPlayer> PastOpusPlayers { get; set; }
-
-        public System.Data.Entity.DbSet<OPUS.Models.STCPlayers> STCPlayers { get; set; }
+        public DbSet<OPUS.Models.PastOpusPlayer> PastOpusPlayers { get; set; }
+        public DbSet<OPUS.Models.STCPlayers> STCPlayers { get; set; }
+        public DbSet<OPUS.Models.FirstNames> FirstNames { get; set; }
     }
 }

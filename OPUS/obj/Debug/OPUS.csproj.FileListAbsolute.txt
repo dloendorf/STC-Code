@@ -86,5 +86,6 @@ C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\bin\Microsoft.Owi
 C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\obj\Debug\OPUS.csprojResolveAssemblyReference.cache
 C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\obj\Debug\OPUS.dll
 C:\Users\David\Documents\Visual Studio 2015\Projects\OPUS\OPUS\obj\Debug\OPUS.pdb

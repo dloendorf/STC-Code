@@ -34,6 +34,12 @@
 
 </style>
 
+$(document).ready(function()  {
+    $("#text").keyup(function(){
+        }
+    });
+});
+
 <h2>Select This Week's Players</h2>
 
 @using (Html.BeginForm())
@@ -52,7 +58,10 @@
             }
     </div>
     <br/>
-    <div class="form-group">
+                    @Html.TextArea("pastedtext", null, 10, 55, null)
+        <br />
+    
+        <div class="form-group">
         <div class="col-md-6">
             <input type="submit" value="Accept" class="btn btn-primary" />
             <a class="btn btn-primary" href="/CourtAssignments/Index">Cancel</a>

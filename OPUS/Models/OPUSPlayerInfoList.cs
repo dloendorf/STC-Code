@@ -16,7 +16,7 @@ namespace OPUS.Models
         {
             get
             {
-                return Name + " (" + STCRank + ")";
+                return Name;
             }
         }
     }
